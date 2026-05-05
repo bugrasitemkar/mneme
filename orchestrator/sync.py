@@ -20,27 +20,33 @@ def sync_to_github(wake_num: int, log):
 
     def run(cmd):
         env = os.environ.copy()
+        # safe.directory — mneme_sys has no home dir so can't use global config
         env["GIT_CONFIG_COUNT"] = "1"
         env["GIT_CONFIG_KEY_0"] = "safe.directory"
         env["GIT_CONFIG_VALUE_0"] = str(REPO_DIR)
+        # git identity — required for commit, can't rely on global config
+        env["GIT_AUTHOR_NAME"] = "Mneme"
+        env["GIT_AUTHOR_EMAIL"] = "mneme@localhost"
+        env["GIT_COMMITTER_NAME"] = "Mneme"
+        env["GIT_COMMITTER_EMAIL"] = "mneme@localhost"
         return subprocess.run(
             cmd, cwd=REPO_DIR, capture_output=True, text=True, env=env
         )
 
     try:
-        # Embed token in remote URL each time — never stored in git config
         remote = f"https://{token}@github.com/{repo}.git"
         run(["git", "remote", "set-url", "origin", remote])
-
         run(["git", "add"] + DATA_FILES)
 
-        # Check if there's actually anything new to commit
         diff = run(["git", "diff", "--cached", "--quiet"])
         if diff.returncode == 0:
             log("[SYNC] No changes since last push.")
             return
 
-        run(["git", "commit", "-m", f"Wake #{wake_num}"])
+        commit = run(["git", "commit", "-m", f"Wake #{wake_num}"])
+        if commit.returncode != 0:
+            log(f"[SYNC ERROR] Commit failed: {commit.stderr.strip()}")
+            return
 
         result = run(["git", "push", "origin", "main"])
         if result.returncode == 0:
