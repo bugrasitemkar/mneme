@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # Mneme — Post-setup verification (post-implementation checklist)
-set -euo pipefail
+set -uo pipefail
 PASS=0; FAIL=0
 
 check() {
@@ -8,18 +8,18 @@ check() {
     if eval "$cmd" &>/dev/null; then
         if [ "$expect_success" = "true" ]; then
             echo "  PASS  $desc"
-            ((PASS++))
+            PASS=$((PASS + 1))
         else
             echo "  FAIL  $desc (expected failure but succeeded)"
-            ((FAIL++))
+            FAIL=$((FAIL + 1))
         fi
     else
         if [ "$expect_success" = "false" ]; then
             echo "  PASS  $desc (correctly rejected)"
-            ((PASS++))
+            PASS=$((PASS + 1))
         else
             echo "  FAIL  $desc"
-            ((FAIL++))
+            FAIL=$((FAIL + 1))
         fi
     fi
 }

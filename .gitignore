@@ -4,7 +4,6 @@ orchestrator/.env
 # Local Pi runtime artifacts
 orchestrator/logs/
 system/state.json.bak
-data/
 
 # Python
 __pycache__/
