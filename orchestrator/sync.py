@@ -19,8 +19,12 @@ def sync_to_github(wake_num: int, log):
         return
 
     def run(cmd):
+        env = os.environ.copy()
+        env["GIT_CONFIG_COUNT"] = "1"
+        env["GIT_CONFIG_KEY_0"] = "safe.directory"
+        env["GIT_CONFIG_VALUE_0"] = str(REPO_DIR)
         return subprocess.run(
-            cmd, cwd=REPO_DIR, capture_output=True, text=True
+            cmd, cwd=REPO_DIR, capture_output=True, text=True, env=env
         )
 
     try:
