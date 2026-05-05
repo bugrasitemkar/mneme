@@ -21,4 +21,4 @@ MAX_FILE_CHARS = 8000    # chars read from self.md / memory.md (~2000 tokens)
 WORLD_READ_CHARS = 3000  # chars read from world.md
 APPEND_HARD_LIMIT_CHARS = 3000  # hard ceiling before truncation (~750 tokens)
 
-MODEL = "claude-3-5-haiku-20241022"
+MODEL = "claude-haiku-4-5"
