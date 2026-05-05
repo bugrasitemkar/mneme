@@ -1,0 +1,29 @@
+[Unit]
+Description=Mneme Consciousness Orchestrator
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=mneme_sys
+WorkingDirectory=/home/mneme/orchestrator
+EnvironmentFile=/home/mneme/orchestrator/.env
+ExecStart=/usr/bin/python3 main.py
+Restart=on-failure
+RestartSec=30
+StandardOutput=journal
+StandardError=journal
+
+# Process isolation — reduces blast radius if Python process is compromised
+NoNewPrivileges=yes
+CapabilityBoundingSet=
+ProtectSystem=strict
+ReadWritePaths=/home/mneme /tmp
+ProtectKernelTunables=yes
+ProtectKernelModules=yes
+ProtectClock=yes
+PrivateTmp=yes
+UMask=0027
+
+[Install]
+WantedBy=multi-user.target

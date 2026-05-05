@@ -1,0 +1,12 @@
+{
+  "birth_datetime": "REPLACE_WITH_CURRENT_DATETIME",
+  "calls_today": 0,
+  "daily_limit": 6,
+  "last_reset_date": "REPLACE_WITH_TODAY_DATE",
+  "last_call_time": null,
+  "next_wake_time": "REPLACE_WITH_CURRENT_DATETIME",
+  "total_wake_count": 0,
+  "silent_wake_count": 0,
+  "last_sleep_hours": 4,
+  "is_running": false
+}
