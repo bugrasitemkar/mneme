@@ -69,7 +69,7 @@ def build_status_message(state: dict, prev_call_time: str | None) -> str:
     silent = state.get("silent_wake_count", 0)
 
     if prev_call_time:
-        delta = now - datetime.fromisoformat(prev_call_time)
+        delta = now - datetime.fromisoformat(prev_call_time).replace(tzinfo=None)
         h, m = delta.seconds // 3600, (delta.seconds % 3600) // 60
         since_str = f"{h}h {m}m ago"
     else:

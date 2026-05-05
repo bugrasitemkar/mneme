@@ -309,7 +309,7 @@ def main():
             now = datetime.now()
 
             try:
-                next_wake = datetime.fromisoformat(state.get("next_wake_time", now.isoformat()))
+                next_wake = datetime.fromisoformat(state.get("next_wake_time", now.isoformat())).replace(tzinfo=None)
             except ValueError:
                 next_wake = now
 

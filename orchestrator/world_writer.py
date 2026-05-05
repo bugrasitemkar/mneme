@@ -21,20 +21,20 @@ def write_world_log(state: dict, tool_calls: list[str]):
     wake_num = state.get("total_wake_count", 0)
 
     birth_str = state.get("birth_datetime", now.isoformat())
-    birth = datetime.fromisoformat(birth_str)
+    birth = datetime.fromisoformat(birth_str).replace(tzinfo=None)
     alive = now - birth
     alive_days, alive_h = alive.days, alive.seconds // 3600
 
     last_call = state.get("last_call_time")
     if last_call:
-        since = now - datetime.fromisoformat(last_call)
+        since = now - datetime.fromisoformat(last_call).replace(tzinfo=None)
         since_str = f"{since.seconds // 3600}h {(since.seconds % 3600) // 60}m"
     else:
         since_str = "first wake"
 
     calls_today = state.get("calls_today", 0)
     daily_limit = state.get("daily_limit", 6)
-    next_wake = datetime.fromisoformat(state["next_wake_time"])
+    next_wake = datetime.fromisoformat(state["next_wake_time"]).replace(tzinfo=None)
     next_wake_str = next_wake.strftime("%H:%M")
 
     tool_lines = "\n".join(f"- {t}" for t in tool_calls) if tool_calls else "- (none)"
